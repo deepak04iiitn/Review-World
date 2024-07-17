@@ -15,6 +15,14 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    nickname : {
+        type : String,
+        default : "Novice Reviewer",
+    }
+    numberOfReviews : {
+        type: Number,
+        default: 0,
+    }
 } , {timestamps : true})
 
 const User = mongoose.model('User' , userSchema);
