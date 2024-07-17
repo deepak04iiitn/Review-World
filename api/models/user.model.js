@@ -18,11 +18,11 @@ const userSchema = new mongoose.Schema({
     nickname : {
         type : String,
         default : "Novice Reviewer",
-    }
+    },
     numberOfReviews : {
         type: Number,
         default: 0,
-    }
+    },
 } , {timestamps : true})
 
 const User = mongoose.model('User' , userSchema);
