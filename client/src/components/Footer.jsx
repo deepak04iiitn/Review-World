@@ -63,6 +63,7 @@ export default function FooterCom() {
             by="Review World"
             year={new Date().getFullYear()}
           />
+          All rights reserved
           <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
             <Footer.Icon href='#' icon={BsFacebook}/>
             <Footer.Icon href='#' icon={BsInstagram}/>
