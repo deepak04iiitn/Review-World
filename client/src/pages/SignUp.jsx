@@ -83,13 +83,13 @@ export default function SignUp() {
                 <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 
                     <div>
-                        <FloatingLabel variant="outlined" label="Your Username" type='text' sizing='sm' id='username' onChange={handleChange}/>
+                        <FloatingLabel variant="outlined" label="Username" placeholder='Username' type='text' sizing='sm' id='username' onChange={handleChange}/>
                     </div>
                     <div>
-                        <FloatingLabel variant="outlined" label="Your Email" type='email' sizing='sm' id='email' onChange={handleChange}/>
+                        <FloatingLabel variant="outlined" label="Email" placeholder='Email' type='email' sizing='sm' id='email' onChange={handleChange}/>
                     </div>
                     <div>
-                        <FloatingLabel variant="outlined" label="Your Password" type='password' sizing='sm' id='password' onChange={handleChange}/>
+                        <FloatingLabel variant="outlined" label="Password" placeholder='*******' type='password' sizing='sm' id='password' onChange={handleChange}/>
                     </div>
 
                     <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
