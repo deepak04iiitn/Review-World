@@ -1,8 +1,9 @@
-import { Button, FloatingLabel , Blockquote, Alert, Spinner } from 'flowbite-react'
+import { Button, TextInput , Label , Blockquote, Alert, Spinner } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link , useNavigate } from 'react-router-dom'
 import { useDispatch , useSelector } from 'react-redux';
 import { signInStart , signInFailure , signInSuccess } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 export default function SignIn() {
 
@@ -80,12 +81,25 @@ export default function SignIn() {
             <div className='flex-1'>
                 <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 
-                    <div>
-                        <FloatingLabel variant="outlined" label="Email" placeholder='Email' type='email' sizing='sm' id='email' onChange={handleChange}/>
-                    </div>
-                    <div>
-                        <FloatingLabel variant="outlined" label="Password" placeholder='********' type='password' sizing='sm' id='password' onChange={handleChange}/>
-                    </div>
+                        <div>
+                          <Label value='Your email' />
+                          <TextInput
+                              type='email'
+                              placeholder='name@company.com'
+                              id='email'
+                              onChange={handleChange}
+                          />
+                        </div>
+
+                        <div>
+                          <Label value='Your password' />
+                          <TextInput
+                              type='password'
+                              placeholder='********'
+                              id='password'
+                              onChange={handleChange}
+                          />
+                        </div>
 
                     <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
                         {
@@ -97,6 +111,8 @@ export default function SignIn() {
                             ) : 'Sign In'
                         }
                     </Button>
+
+                    <OAuth />
 
                 </form>
 

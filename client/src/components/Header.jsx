@@ -1,10 +1,17 @@
 import { Button, Dropdown, Navbar, TextInput } from 'flowbite-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector , useDispatch } from 'react-redux';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon } from 'react-icons/fa';
+//import { HiChatAlt } from "react-icons/hi";
+import { FaMoon , FaSun } from 'react-icons/fa';
+import { toggleTheme } from '../redux/theme/themeSlice';
 
 export default function Header() {
+
+    const {theme} = useSelector((state) => state.theme)                    // we wanted to know which theme is currently set
+    const dispatch = useDispatch();   
+
   return (
     <Navbar className='border-b-2 '>
 
@@ -20,8 +27,8 @@ export default function Header() {
 
         <div className='flex gap-2 md:order-2'>
 
-            <Button className='w-12 h-10 sm:inline' color='gray' pill>
-                <FaMoon />
+            <Button className='w-12 h-10  sm:inline' color='gray' pill onClick={() => dispatch(toggleTheme())}> 
+                {theme === 'light' ? <FaSun /> : <FaMoon />}
             </Button>
 
             <Link to='/sign-in'>

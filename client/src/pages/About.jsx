@@ -4,7 +4,8 @@ import { HiArrowNarrowRight, HiCalendar } from "react-icons/hi";
 
 export default function About() {
   return (
-    <Timeline className='m-10'>
+    <div className='flex justify-center items-center'>
+      <Timeline className='m-10'>
       <Timeline.Item>
         <Timeline.Point icon={HiCalendar} />
         <Timeline.Content>
@@ -46,5 +47,6 @@ export default function About() {
         </Timeline.Content>
       </Timeline.Item>
     </Timeline>
+    </div>
   )
 }
