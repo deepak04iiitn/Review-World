@@ -11,6 +11,7 @@ export default function Home() {
 
 <div className='flex flex-col items-center mt-10'>
   <div className='mt-0'>
+
     <TypeAnimation
       sequence={[
         'Welcome to the World of Ratings',
