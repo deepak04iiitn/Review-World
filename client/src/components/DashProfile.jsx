@@ -252,9 +252,18 @@ export default function DashProfile() {
                 </Alert>
             )}
 
-            <div className='text-blue-500 flex justify-between mt-5'>
-                <span className='cursor-pointer'>Title :-</span>
-                <span className='cursor-pointer'>Number of Reviews :-</span>
+            <div className='flex justify-between mt-5'>
+
+                <div>
+                    <span>Title :- </span>
+                    <span className='font-bold text-blue-500'>Novice</span>
+                </div> 
+
+                <div>
+                    <span>No. of Reviews :- </span>
+                    <span className='font-bold text-blue-500'>0</span>
+                </div> 
+
             </div>
 
             <TextInput type='text' id='username' placeholder='Username' defaultValue={currentUser.username} onChange={handleChange} />
@@ -263,6 +272,10 @@ export default function DashProfile() {
 
             <Button type='submit' gradientDuoTone='purpleToBlue' outline>
                 Update
+            </Button>
+
+            <Button type='button' gradientDuoTone='purpleToPink'>
+                Give a Review
             </Button>
 
         </form>
