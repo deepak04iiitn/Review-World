@@ -1,13 +1,62 @@
 import { Button, Select, Textarea, TextInput } from 'flowbite-react'
 import React from 'react'
+import { useSelector } from 'react-redux';
+
+const slidingAnimation = {
+    animation: 'slideIn 2s ease-out',
+};
+  
+const darkThemeGlow = {
+    animation: 'glowDark 1.5s infinite alternate',
+};
+  
+const lightThemeGlow = {
+    animation: 'glowLight 1.5s infinite alternate',
+};
 
 export default function CreateReview() {
+
+    const {theme} = useSelector((state) => state.theme);
     
   return (
 
     <main className='p-3 max-w-4xl mx-auto'>
 
-        <h1 className='text-3xl font-semibold text-center my-7'>Give a Review</h1>
+        <h1 className='text-3xl font-semibold text-center my-10 animate-pulse text-gradient' style={{ ...slidingAnimation, ...(theme === 'dark' ? darkThemeGlow : lightThemeGlow) }}>Give a Review</h1>
+
+        <style>
+        {`
+          @keyframes slideIn {
+            from {
+              transform: translateX(-100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+
+          @keyframes glowDark {
+            from {
+              text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+            }
+            to {
+              text-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3);
+            }
+          }
+
+          @keyframes glowLight {
+            from {
+              text-shadow: 0 0 10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.05);
+            }
+            to {
+              text-shadow: 0 0 20px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.2);
+            }
+          }
+        `}
+      </style>
+
 
         <form className='flex flex-col sm:flex-row gap-6 mb-10'>
 
