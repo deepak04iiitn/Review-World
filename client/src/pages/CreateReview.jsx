@@ -1,30 +1,156 @@
-import { Button, Select, Textarea, TextInput } from 'flowbite-react'
-import React from 'react'
+import { Button, Rating, Select, Spinner, Textarea, TextInput } from 'flowbite-react'
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import React, { useState } from 'react'
+import { app } from '../firebase';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const slidingAnimation = {
-    animation: 'slideIn 2s ease-out',
+  animation: 'slideIn 2s ease-out',
 };
-  
+
 const darkThemeGlow = {
-    animation: 'glowDark 1.5s infinite alternate',
+  animation: 'glowDark 1.5s infinite alternate',
 };
-  
+
 const lightThemeGlow = {
-    animation: 'glowLight 1.5s infinite alternate',
+  animation: 'glowLight 1.5s infinite alternate',
 };
+
+const slidingRightAnimation = {
+  animation: 'slideInRight 2s ease-out',
+};
+
 
 export default function CreateReview() {
 
     const {theme} = useSelector((state) => state.theme);
+    const [starFilled , setStarFilled] = useState(0);
+    const [starCount , setStarCount] = useState(0);
+    const [hoverText , setHoverText] = useState('');
+    const [numStar , setNumStar] = useState(0);
+    const [files , setFiles] = useState([]);
+    const [formData , setFormData] = useState({
+        imageUrls : [],
+    })
+    const [imageUploadError , setImageUploadError] = useState(false);
+    const [uploading , setUploading] = useState(false);
+
+    const handleStarClick = (index) => {
+
+      setStarFilled(index + 1);
+      setStarCount(index+1);
+      setNumStar(index+1);
+
+      if(index === 0)
+      {
+          setHoverText('Terrible ❌');
+      }
+      else if(index === 1)
+      {
+          setHoverText('Bad 👎');
+      }
+      else if(index === 2)
+      {
+          setHoverText('Ok 👍');
+      }
+      else if(index === 3)
+      {
+          setHoverText('Good 🙂');
+      }
+      else if(index === 4)
+      {
+          setHoverText('Great 👌');
+      }
+
+    };
+
+    
+
+    const handleImageSubmit = (e) => {
+        
+      if(files.length > 0 && files.length + formData.imageUrls.length < 7)
+          {
+              setUploading(true);
+              setImageUploadError(false);
+
+              const promises = [];
+
+              for(let i = 0 ; i < files.length ; i++)
+              {
+                  promises.push(storeImage(files[i]));
+              }
+
+              Promise.all(promises).then((urls) => {
+                  setFormData({ ...formData , imageUrls: formData.imageUrls.concat(urls),
+              });
+
+                   setImageUploadError(false);
+                   setUploading(false);
+
+              }).catch((err) => {
+                  setImageUploadError('Image upload failed ( 2 mb max per image)');
+                  setUploading(false);
+              });
+          }
+          else
+          {
+              setImageUploadError('You can only upload 6 images per review!');
+              setUploading(false);
+          }
+
+  };
+
+
+
+  const storeImage = async(file) => {
+
+    return new Promise((resolve, reject) => {
+
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + file.name;
+
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        },
+        (error) => {
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  };
+
+
+
+  const handleRemoveImage = (index) => {
+    setFormData({
+        ...formData,
+        imageUrls : formData.imageUrls.filter((_ , i) => i !== index),
+    });
+}
+
+
     
   return (
 
     <main className='p-3 max-w-4xl mx-auto'>
 
-        <h1 className='text-3xl font-semibold text-center my-10 animate-pulse text-gradient' style={{ ...slidingAnimation, ...(theme === 'dark' ? darkThemeGlow : lightThemeGlow) }}>Give a Review</h1>
+        <h1 className='text-3xl font-semibold text-center my-10 animate-pulse text-gradient' 
+          style={{ ...slidingAnimation, ...(theme === 'dark' ? darkThemeGlow : lightThemeGlow) }}>Give a Review</h1>
 
-        <style>
+      <style>
         {`
           @keyframes slideIn {
             from {
@@ -36,6 +162,18 @@ export default function CreateReview() {
               opacity: 1;
             }
           }
+
+          @keyframes slideInRight {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+
 
           @keyframes glowDark {
             from {
@@ -62,7 +200,7 @@ export default function CreateReview() {
 
             <div className='flex flex-col gap-4 flex-1'>
 
-                <TextInput type='text'id='name' placeholder='Name' required/>
+                <TextInput type='text'id='name' placeholder='Your name' required/>
 
                 <Select required>
 
@@ -110,22 +248,33 @@ export default function CreateReview() {
                     
                 </Select>
 
+                <TextInput type='text'id='subcategory' placeholder='Title' required/>
+
                 <Textarea placeholder='Write a Review...' required rows={4} />
 
-                <Select required>
+                <div className='flex row justify-evenly'>
 
-                    <option value='unrated'>Give a Rating</option>
-                    <option value='one'>1</option>
-                    <option value='one-five'>1.5</option>
-                    <option value='two'>2</option>
-                    <option value='two-five'>2.5</option>
-                    <option value='three'>3</option>
-                    <option value='three-five'>3.5</option>
-                    <option value='four'>4</option>
-                    <option value='four-five'>4.5</option>
-                    <option value='five'>5</option>
-            
-                </Select>
+                  <Rating size='lg' className='mt-1' required>
+                    {[...Array(5)].map((_, index) => (
+                      <Rating.Star
+                        key={index}
+                        onClick={() => handleStarClick(index)}
+                        filled={index < starFilled}
+                        className='cursor-pointer'
+                      />
+                    ))}
+
+                    {
+                      hoverText && 
+                        <>
+                          <p className='ml-4 text-lg' style={slidingRightAnimation}>{numStar}⭐</p>
+                          <p className='ml-4 text-lg' style={slidingRightAnimation}>{hoverText}</p>
+                        </>
+                    }
+
+                  </Rating>
+
+                </div>
 
             </div>
 
@@ -136,15 +285,33 @@ export default function CreateReview() {
                 </p>
 
                 <div className='flex gap-4'>
+
                     <div className='border border-gray-300 rounded-lg w-full h-14 p-1.5'>
-                        <input className='rounded-lg w-full h-full' type='file' id='images' accept='image/*' multiple />
+                        <input className='rounded-lg w-full h-full' type='file' id='images' accept='image/*' multiple onChange={(e) => setFiles(e.target.files)} />
                     </div>
-                    <Button type='button' gradientDuoTone='purpleToPink' outline>
-                        <span className='mt-1.5'>UPLOAD</span>
+
+                    <Button type='button' gradientDuoTone='purpleToPink' outline onClick={handleImageSubmit} disabled={uploading}>
+                        <span className='mt-1.5'>{uploading ? <Spinner size='md' color="warning" /> : 'UPLOAD'}</span>
                     </Button>
+
                 </div>
 
-                <Button type='submit' gradientDuoTone='purpleToPink'>Give Review</Button>
+                <p className='text-red-700 text-sm'>{imageUploadError && imageUploadError}</p>
+
+                {
+                    formData.imageUrls.length > 0 && formData.imageUrls.map((url , index) => (
+
+                        <div key={url} className='flex justify-between p-2 border items-center shadow-lg'>
+
+                            <img src={url} alt='listing image' className='w-10 h-10 object-contain rounded-lg' />
+
+                            <button type='button' onClick={() => handleRemoveImage(index)} className='p-3 text-red-700 rounded-lg uppercase hover:opacity-75'>Delete</button>
+
+                        </div>
+                    ))
+                }
+
+                <Button type='submit' gradientDuoTone='purpleToPink'>Submit Review</Button>
 
             </div>
 

@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     nickname : {
         type : String,
-        default : "Novice Reviewer",
+        default : "Novice",
     },
     numberOfReviews : {
         type: Number,

@@ -16,8 +16,7 @@ const reviewSchema = new mongoose.Schema(
             required : true,
         },
         rating : {
-            type : String,
-            default : 'unrated',
+            type : Number,
             required : true,
         },
         imageUrls: {

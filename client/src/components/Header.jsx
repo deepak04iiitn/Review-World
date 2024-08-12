@@ -41,7 +41,7 @@ export default function Header() {
     }
 
   return (
-    <Navbar className='border-b-2 '>
+    <Navbar className='border-b-2 shadow-md'>
 
         <Link to='/' className='self-center'>
 
