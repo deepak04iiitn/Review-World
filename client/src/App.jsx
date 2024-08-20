@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
 import CreateReview from './pages/CreateReview';
+import Review from './pages/Review';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/create-review' element={<CreateReview />} />
             </Route>
+            <Route path='/review/:reviewId' element={<Review />} />
         </Routes>
 
     <Footer />

@@ -1,6 +1,7 @@
 import { errorHandler } from "../utils/error.js"
 import bcryptjs from 'bcryptjs'
 import User from "../models/user.model.js";
+import Review from "../models/review.model.js";
 
 export const test = (req , res) => {
     res.json({message : 'API is working'})
@@ -97,3 +98,21 @@ export const signout = async(req , res , next) => {
     }
     
 }
+
+
+export const getUserReviews = async (req, res, next) => {
+
+    if (req.user.id === req.params.id) {
+
+      try {
+        const reviews = await Review.find({ userRef: req.params.id });
+        res.status(200).json(reviews);
+      } catch (error) {
+        next(error);
+      }
+
+    } else {
+      return next(errorHandler(401, 'You can only view your own reviews!'));
+    }
+    
+  };

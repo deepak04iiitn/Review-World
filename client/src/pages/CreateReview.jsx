@@ -25,6 +25,8 @@ const slidingRightAnimation = {
 export default function CreateReview() {
 
     const {theme} = useSelector((state) => state.theme);
+    const {currentUser} = useSelector((state) => state.user);
+
     const [starFilled , setStarFilled] = useState(0);
     const [starCount , setStarCount] = useState(0);
     const [hoverText , setHoverText] = useState('');
@@ -32,38 +34,49 @@ export default function CreateReview() {
     const [files , setFiles] = useState([]);
     const [formData , setFormData] = useState({
         imageUrls : [],
+        name :'',
+        category : 'uncategorized',
+        subcategory : '',
+        review : '',
+        rating : 0
     })
     const [imageUploadError , setImageUploadError] = useState(false);
     const [uploading , setUploading] = useState(false);
+    const [loading , setLoading] = useState(false);
+    const [error , setError] = useState(false);
+
+    const navigate = useNavigate();
+
 
     const handleStarClick = (index) => {
 
-      setStarFilled(index + 1);
-      setStarCount(index+1);
-      setNumStar(index+1);
+      const ratingValue = index + 1; // Calculate the clicked star rating
 
-      if(index === 0)
-      {
-          setHoverText('Terrible ❌');
-      }
-      else if(index === 1)
-      {
-          setHoverText('Bad 👎');
-      }
-      else if(index === 2)
-      {
-          setHoverText('Ok 👍');
-      }
-      else if(index === 3)
-      {
-          setHoverText('Good 🙂');
-      }
-      else if(index === 4)
-      {
-          setHoverText('Great 👌');
-      }
+      // Update state variables
+      setStarFilled(ratingValue);
+      setStarCount(ratingValue);
+      setNumStar(ratingValue);
 
-    };
+      // Update the formData to include the new rating value
+      setFormData((prevState) => ({
+        ...prevState,
+        rating: ratingValue, // Set the rating in formData
+      }));
+
+      // Set the hover text based on the rating
+      if (index === 0) {
+        setHoverText('Terrible ❌');
+      } else if (index === 1) {
+        setHoverText('Bad 👎');
+      } else if (index === 2) {
+        setHoverText('Ok 👍');
+      } else if (index === 3) {
+        setHoverText('Good 🙂');
+      } else if (index === 4) {
+        setHoverText('Great 👌');
+      }
+};
+
 
     
 
@@ -139,9 +152,57 @@ export default function CreateReview() {
         ...formData,
         imageUrls : formData.imageUrls.filter((_ , i) => i !== index),
     });
-}
+  }
 
 
+  const handleChange = (e) => {
+      const { id, value } = e.target;
+      setFormData({
+          ...formData,
+          [id]: value,
+      });
+  }
+
+
+  const handleSubmit = async(e) => {
+
+      e.preventDefault();
+
+      try {
+
+        if(formData.imageUrls.length < 1) return setError('You must upload at least 1 image!')
+
+        setLoading(true);
+        setError(false);
+
+        const res = await fetch('/api/review/create' , {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
+            },
+            body : JSON.stringify({
+                ...formData,
+                userRef : currentUser._id,
+            }),
+        });
+
+        const data = await res.json();
+        setLoading(false);
+
+        if(data.success === false)
+        {
+            setError(data.message);
+        }
+        
+        navigate(`/review/${data._id}`);
+
+    } catch (error) {
+        setError(error.message);
+        setLoading(false);
+    }
+
+  }
+  
     
   return (
 
@@ -196,13 +257,13 @@ export default function CreateReview() {
       </style>
 
 
-        <form className='flex flex-col sm:flex-row gap-6 mb-10'>
+        <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-6 mb-10'>
 
             <div className='flex flex-col gap-4 flex-1'>
 
-                <TextInput type='text'id='name' placeholder='Your name' required/>
+                <TextInput type='text'id='name' placeholder='Your name' required onChange={handleChange} value={formData.name} />
 
-                <Select required>
+                <Select required id='category' onChange={handleChange} value={formData.category}>
 
                     <option value='uncategorized'>Select a category</option>
                     <option value='college'>College</option>
@@ -248,13 +309,13 @@ export default function CreateReview() {
                     
                 </Select>
 
-                <TextInput type='text'id='subcategory' placeholder='Title' required/>
+                <TextInput type='text'id='subcategory' placeholder='Title' required onChange={handleChange} value={formData.subcategory} />
 
-                <Textarea placeholder='Write a Review...' required rows={4} />
+                <Textarea id='review' placeholder='Write a Review...' required rows={4} onChange={handleChange} value={formData.review} />
 
                 <div className='flex row justify-evenly'>
 
-                  <Rating size='lg' className='mt-1' required>
+                  <Rating size='lg' className='mt-1' required id='rating' onChange={handleChange} value={formData.rating} >
                     {[...Array(5)].map((_, index) => (
                       <Rating.Star
                         key={index}
@@ -311,7 +372,11 @@ export default function CreateReview() {
                     ))
                 }
 
-                <Button type='submit' gradientDuoTone='purpleToPink'>Submit Review</Button>
+                <Button type='submit' gradientDuoTone='purpleToPink' disabled={loading || uploading}>
+                  {loading ? 'Submitting...' : 'Submit Review'}
+                </Button>
+
+                {error && <p className='text-red-700 text-sm'>{error}</p>}
 
             </div>
 
