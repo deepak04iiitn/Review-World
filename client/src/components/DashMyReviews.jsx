@@ -134,7 +134,9 @@ export default function DashMyReviews() {
                                         </Table.Cell>
 
                                         <Table.Cell>
-                                            <span className='font-medium text-red-500 hover:underline cursor-pointer uppercase'>Edit</span>
+                                            <Link to={`/update-review/${review._id}`}>
+                                                <span className='font-medium text-red-500 hover:underline cursor-pointer uppercase'>Edit</span>
+                                            </Link>
                                         </Table.Cell>
 
                                     </Table.Row>

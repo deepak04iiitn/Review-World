@@ -68,3 +68,22 @@ export const updateReview = async(req , res , next) => {
         next(error);
     }
 }
+
+
+export const getReview = async(req , res , next) => {
+
+    try {
+
+        const review = await Review.findById(req.params.id);
+
+        if(!review)
+        {
+            return next(errorHandler(404 , 'Review not found!'));
+        }
+
+        res.status(200).json(review);    
+        
+    } catch (error) {
+        next(error);
+    }
+}
