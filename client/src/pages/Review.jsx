@@ -41,7 +41,7 @@ export default function Review() {
 
   const summarizeReview = async () => {
     setShowTextarea(true);
-    const genAI = new GoogleGenerativeAI('AIzaSyDShL3GXvGSL894i7eLnwiKRmMZz5GboiY');
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const fullPrompt = `
     Summarize the following review and suggest the customer what to do based on the review:
