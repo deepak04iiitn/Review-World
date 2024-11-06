@@ -87,3 +87,23 @@ export const getReview = async(req , res , next) => {
         next(error);
     }
 }
+
+
+export const getAllReviews = async (req, res, next) => {
+
+    try {
+
+      const reviews = await Review.find().sort({createdAt:-1});
+
+      if(!reviews)
+      {
+        return next(errorHandler(404 , 'Reviews not found!'));
+      }
+
+      res.status(200).json(reviews);
+
+    } catch (error) {
+      next(error);
+    }
+    
+  };

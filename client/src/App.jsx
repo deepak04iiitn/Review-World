@@ -11,6 +11,9 @@ import PrivateRoute from './components/PrivateRoute';
 import CreateReview from './pages/CreateReview';
 import Review from './pages/Review';
 import UpdateReview from './pages/UpdateReview';
+import AllReviews from './pages/AllReviews';
+import Trends from './pages/Trends';
+import Polls from './pages/Polls';
 
 export default function App() {
   return (
@@ -29,6 +32,9 @@ export default function App() {
                 <Route path='/update-review/:reviewId' element={<UpdateReview />} />
             </Route>
             <Route path='/review/:reviewId' element={<Review />} />
+            <Route path='/reviews' element={<AllReviews />} />
+            <Route path='/trends' element={<Trends />} />
+            <Route path='/polls' element={<Polls />} />
         </Routes>
 
     <Footer />
