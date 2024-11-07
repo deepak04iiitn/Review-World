@@ -107,3 +107,73 @@ export const getAllReviews = async (req, res, next) => {
     }
     
   };
+
+
+
+  export const likeReview = async (req, res, next) => {
+
+    try {
+        const review = await Review.findById(req.params.revId);
+
+        if (!review) {
+            return next(errorHandler(404, 'Review not found'));
+        }
+
+        const userId = req.user.id; 
+
+        if (!review.likes.includes(userId)) {
+            review.likes.push(userId);
+            review.numberOfLikes += 1;
+
+            const dislikeIndex = review.dislikes.indexOf(userId);
+
+            if (dislikeIndex !== -1) {
+                review.dislikes.splice(dislikeIndex, 1);
+                review.numberOfDislikes -= 1;
+            }
+
+            await review.save();
+
+            res.status(200).json({ message: 'Review liked successfully', likes: review.numberOfLikes, dislikes: review.numberOfDislikes });
+
+        } else {
+            res.status(400).json({ message: 'You have already liked this review' });
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const dislikeReview = async (req, res, next) => {
+
+    try {
+        const review = await Review.findById(req.params.revId);
+
+        if (!review) {
+            return next(errorHandler(404, 'Review not found'));
+        }
+
+        const userId = req.user.id; 
+
+        if (!review.dislikes.includes(userId)) {
+            review.dislikes.push(userId);
+            review.numberOfDislikes += 1;
+
+            const likeIndex = review.likes.indexOf(userId);
+
+            if (likeIndex !== -1) {
+                review.likes.splice(likeIndex, 1);
+                review.numberOfLikes -= 1;
+            }
+
+            await review.save();
+
+            res.status(200).json({ message: 'Review disliked successfully', likes: review.numberOfLikes, dislikes: review.numberOfDislikes });
+
+        } else {
+            res.status(400).json({ message: 'You have already disliked this review' });
+        }
+    } catch (error) {
+        next(error);
+    }
+}

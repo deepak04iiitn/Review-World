@@ -27,9 +27,40 @@ const reviewSchema = new mongoose.Schema(
             type: Array,
             required: true,
         },
+        userEmail : {
+            type: String,
+            required: true,
+        },
+        userUsername : {
+            type: String,
+            required: true,
+        },
+        userTitle : {
+            type: String,
+            required: true,
+        },
         userRef: {
             type: String,
             required: true,
+        },
+        likes: {
+            type: Array,
+            default: [],
+        },
+        
+        numberOfLikes: {
+            type: Number,
+            default: 0,
+        },
+        
+        dislikes: {
+            type: Array,
+            default: [],
+        },
+          
+        numberOfDislikes: {
+            type: Number,
+            default: 0,
         },
 
     },

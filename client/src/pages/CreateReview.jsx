@@ -7,6 +7,7 @@ import { app } from '../firebase';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function CreateReview() {
+  
     const { currentUser } = useSelector((state) => state.user);
     const [starFilled, setStarFilled] = useState(0);
     const [starCount, setStarCount] = useState(0);
@@ -112,6 +113,9 @@ export default function CreateReview() {
                 body: JSON.stringify({
                     ...formData,
                     userRef: currentUser._id,
+                    userEmail: currentUser.email,
+                    userUsername: currentUser.username,
+                    userTitle : currentUser.nickname
                 }),
             });
             const data = await res.json();

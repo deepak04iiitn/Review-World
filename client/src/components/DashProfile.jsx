@@ -257,7 +257,7 @@ export default function DashProfile() {
 
                 <div>
                     <span>Title :- </span>
-                    <span className='font-bold text-blue-500'>Novice</span>
+                    <span className='font-bold text-blue-500'>{currentUser.nickname}</span>
                 </div> 
 
                 <div>
