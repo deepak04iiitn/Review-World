@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ReviewCard from '../components/ReviewCard';
+import ReviewHeader from '../components/ReviewHeader';
 
 export default function AllReviews() {
-
     const [allReviews, setAllReviews] = useState([]);
     const [visibleReviews, setVisibleReviews] = useState([]);
     const [showError, setShowError] = useState(false);
@@ -105,66 +104,20 @@ export default function AllReviews() {
         return <div className="flex justify-center items-center h-screen text-red-500">Error loading reviews</div>
     }
 
-
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
             <div className='container mx-auto px-4 py-8'>
-                <motion.h1 
-                    className="text-4xl font-bold text-center mb-8"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    All Reviews
-                </motion.h1>
-                
-                <motion.div 
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="mb-8 p-4 rounded-lg shadow-lg bg-white dark:bg-gray-800"
-                >
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                        <motion.input
-                            whileHover={{ scale: 1.02 }}
-                            type="text"
-                            placeholder="Search reviews..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="flex-grow min-w-[200px] p-2 border rounded-lg bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                        />
-                        <motion.select
-                            whileHover={{ scale: 1.02 }}
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="p-2 border rounded-lg bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                        >
-                            <option value="">All Categories</option>
-                            {categories.map(category => (
-                                <option key={category} value={category}>{category.replace('-', ' ')}</option>
-                            ))}
-                        </motion.select>
-                        <motion.input
-                            whileHover={{ scale: 1.02 }}
-                            type="text"
-                            placeholder="Search subcategory..."
-                            value={subcategorySearch}
-                            onChange={(e) => setSubcategorySearch(e.target.value)}
-                            className="min-w-[150px] p-2 border rounded-lg bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                        />
-                        <motion.select
-                            whileHover={{ scale: 1.02 }}
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                            className="p-2 border rounded-lg bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                        >
-                            <option value="dateDesc">Newest First</option>
-                            <option value="dateAsc">Oldest First</option>
-                            <option value="ratingDesc">Highest Rated</option>
-                            <option value="ratingAsc">Lowest Rated</option>
-                        </motion.select>
-                    </div>
-                </motion.div>
+                <ReviewHeader 
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    subcategorySearch={subcategorySearch}
+                    setSubcategorySearch={setSubcategorySearch}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}
+                    categories={categories}
+                />
 
                 {visibleReviews && visibleReviews.length > 0 ? (
                     <motion.div 
@@ -193,6 +146,7 @@ export default function AllReviews() {
                         No reviews found
                     </motion.div>
                 )}
+
                 {visibleReviews.length < allReviews.length && (
                     <motion.div 
                         className="text-center mt-8"
