@@ -5,6 +5,7 @@ import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import reviewRoutes from './routes/review.route.js';
 import commentRoutes from './routes/comment.route.js';
+import pollRoutes from './routes/poll.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 
@@ -34,7 +35,7 @@ app.use('/api/user' , userRoutes);
 app.use('/api/auth' , authRoutes);
 app.use('/api/review' , reviewRoutes);
 app.use('/api/comment' , commentRoutes);
-
+app.use('/api/polls', pollRoutes);
 
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
