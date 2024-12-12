@@ -42,7 +42,7 @@ export default function About() {
         className="text-center mb-16"
       >
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-          Welcome to Review World
+          Welcome to Review4All
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Your trusted destination for authentic reviews and meaningful connections
@@ -53,13 +53,13 @@ export default function About() {
       <div className="max-w-3xl mx-auto">
         <AboutSection title="Who Are We?" time="August 2024" delay={0.2}>
           <p>
-            We are <HighlightText>Review World</HighlightText>, your go-to platform for reading and posting reviews about everything that exists. Our mission is to create a comprehensive, user-friendly space where you can find detailed, trustworthy reviews to make informed decisions about products, services, and experiences.
+            We are <HighlightText>Review4All</HighlightText>, your go-to platform for reading and posting reviews about everything that exists. Our mission is to create a comprehensive, user-friendly space where you can find detailed, trustworthy reviews to make informed decisions about products, services, and experiences.
           </p>
         </AboutSection>
 
         <AboutSection title="What Makes Us Different?" time="August 2024" delay={0.4}>
           <p>
-            At Review World, we go beyond traditional review platforms by offering innovative features designed to enhance your experience:
+            At Review4All, we go beyond traditional review platforms by offering innovative features designed to enhance your experience:
           </p>
           <ul className="list-disc ml-6 mt-4 space-y-2">
             <li>
@@ -77,7 +77,7 @@ export default function About() {
         <AboutSection title="Why Choose Us?" time="August 2024" delay={0.6}>
           <div className="space-y-4">
             <p>
-              Choosing Review World means choosing efficiency and clarity. Our platform offers:
+              Choosing Review4All means choosing efficiency and clarity. Our platform offers:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               <motion.div 

@@ -24,7 +24,6 @@ const slidingRightAnimation = {
 
 export default function UpdateReview() {
 
-    const {theme} = useSelector((state) => state.theme);
     const {currentUser} = useSelector((state) => state.user);
 
     const [starFilled , setStarFilled] = useState(0);
@@ -234,7 +233,7 @@ export default function UpdateReview() {
     <main className='p-3 max-w-4xl mx-auto'>
 
         <h1 className='text-3xl font-semibold text-center my-10 animate-pulse text-gradient' 
-          style={{ ...slidingAnimation, ...(theme === 'dark' ? darkThemeGlow : lightThemeGlow) }}>Update a Review</h1>
+          style={{ ...slidingAnimation, ...lightThemeGlow }}>Update a Review</h1>
 
       <style>
         {`

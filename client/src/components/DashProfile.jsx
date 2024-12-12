@@ -9,32 +9,58 @@ import { updateFailure, updateStart , updateSuccess , deleteUserStart , deleteUs
 import { useDispatch } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function DashProfile() {
 
-    const {currentUser , error} = useSelector((state) => state.user);
-
+    const {currentUser} = useSelector(state => state.user);
+    const {error} = useSelector(state => state.user);
     const [imageFile , setImageFile] = useState(null);
-
     const [imageFileUrl , setImageFileUrl] = useState(null);
-
     const [imageFileUploadProgress , setImageFileUploadProgress] = useState(null); 
-
     const [imageFileUploadError , setImageFileUploadError] = useState(null);
-
     const [imageFileUploading , setImageFileUploading] = useState(false);
-
     const [updateUserSuccess , setUpdateUserSuccess] = useState(null);
-
     const [updateUserError , setUpdateUserError] = useState(null);
-
     const [formData , setFormData] = useState({});
-
     const [showModal , setShowModal] = useState(false);
-
+    const [userReviews , setUserReviews] = useState([]);
+    const [showReviewsError , setShowReviewsError] = useState(false);
+    const [loading , setLoading] = useState(false);
     const filePickerRef = useRef();
-
     const dispatch = useDispatch();
+
+
+
+    useEffect(() => {
+
+        const getUserReviews = async() => {
+
+            try {
+
+                setLoading(true);
+                setShowReviewsError(false);
+
+                const res = await fetch(`/api/user/reviews/${currentUser._id}`);
+                const data = await res.json();
+
+                if(data.success === false)
+                {
+                    setShowReviewsError(true);
+                    return;
+                }
+
+                setUserReviews(data);
+                setLoading(false);
+
+            } catch (error) {
+                setShowReviewsError(true);
+            }
+        }
+
+        getUserReviews();
+
+    } , [currentUser._id])
 
 
     const handleImageChange = async(e) => {
@@ -262,7 +288,7 @@ export default function DashProfile() {
 
                 <div>
                     <span>No. of Reviews :- </span>
-                    <span className='font-bold text-blue-500'>0</span>
+                    <span className='font-bold text-blue-500'>{userReviews.length}</span>
                 </div> 
 
             </div>

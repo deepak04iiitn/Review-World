@@ -1,4 +1,5 @@
 import Review from "../models/review.model.js";
+import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
 export const createReview = async(req , res , next) => {
@@ -6,6 +7,11 @@ export const createReview = async(req , res , next) => {
     try {
         
         const review = await Review.create(req.body);
+
+        // Find the user and increment their number of reviews
+        await User.findByIdAndUpdate(req.user._id, {
+            $inc: { numberOfReviews: 1 }
+        });
 
         return res.status(201).json(review);
         
@@ -32,6 +38,12 @@ export const deleteReview = async(req , res , next) => {
     try {
 
         await Review.findByIdAndDelete(req.params.id);
+
+        // Find the user and decrement their number of reviews
+        await User.findByIdAndUpdate(req.user._id, {
+            $inc: { numberOfReviews: -1 }
+        });
+
         res.status(200).json('Review has been deleted!');
 
     } catch (error) {

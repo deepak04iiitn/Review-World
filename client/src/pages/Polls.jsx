@@ -14,6 +14,7 @@ import {
   PlusCircle
 } from 'lucide-react';
 import axios from 'axios';
+import ReviewsHeader from '../components/ReviewsHeader';
 
 export default function CommunityPolls() {
 
@@ -201,10 +202,6 @@ const renderPollCard = (poll, isMyPoll = false) => {
         {/* Footer Section */}
         <div className="mt-4 flex justify-between items-center text-gray-600 relative">
           <div className="flex items-center space-x-2 opacity-70 hover:opacity-100 transition-opacity">
-            <MessageCircle size={18} />
-            <span className="text-sm">0 Comments</span>
-          </div>
-          <div className="flex items-center space-x-2 opacity-70 hover:opacity-100 transition-opacity">
             <Star size={18} />
             <span className="text-sm">{poll.votes.length} Votes</span>
           </div>
@@ -214,7 +211,7 @@ const renderPollCard = (poll, isMyPoll = false) => {
             <motion.button 
               whileHover={{ scale: 1.2 }}
               onClick={() => handleDeletePoll(poll._id)}
-              className="absolute left-1/2 transform -translate-x-1/2 text-red-500 hover:text-red-700 z-10 bg-red-50 rounded-full p-2"
+              className="absolute right-0 text-red-500 hover:text-red-700 z-10 bg-red-50 rounded-full p-2"
             >
               <Trash2 size={16} />
             </motion.button>
@@ -230,18 +227,7 @@ const renderPollCard = (poll, isMyPoll = false) => {
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900">
       <div className="max-w-7xl mx-auto px-4 py-12 relative">
         {/* Header with Modern Typography */}
-        <motion.div 
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12 text-center space-y-4"
-        >
-          <h1 className="text-5xl font-extralight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-            Community Insights
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover collective wisdom, share perspectives, and gain insights through collaborative polling
-          </p>
-        </motion.div>
+        <ReviewsHeader />
 
         {/* Navigation and Actions */}
         <motion.div 

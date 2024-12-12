@@ -44,6 +44,8 @@ export default function DashMyReviews() {
 
     } , [currentUser._id])
 
+    console.log(userReviews.length)
+
 
     const handleReviewDelete = async(reviewId) => {
 
