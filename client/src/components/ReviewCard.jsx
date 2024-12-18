@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { MessageCircle } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Sign-in Modal Component
 const SignInModal = ({ isOpen, onClose }) => {
@@ -55,9 +55,24 @@ export default function ModernReviewCard({ review }) {
   const [localDislikes, setLocalDislikes] = useState(review.numberOfDislikes);
   const [userAction, setUserAction] = useState(null);
   const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showChatModal, setShowChatModal] = useState(false);
   const navigate = useNavigate();
 
   const {currentUser} = useSelector(state => state.user);
+
+
+  const dispatch = useDispatch();
+
+
+  const handleChatClick = () => {
+    if (!currentUser) {
+        setShowSignInModal(true);
+        return;
+    }
+    setShowChatModal(true);
+};
+
+
 
   const handleLikeDislike = async (action) => {
 
@@ -89,17 +104,6 @@ export default function ModernReviewCard({ review }) {
     }
   };
 
-
-  const handleChatWithReviewer = () => {
-
-    if (!currentUser) {
-      setShowSignInModal(true);
-      return;
-    }
-
-    // Implement chat logic or navigation
-    navigate(`/chat/${review.userId}`);
-  };
 
 
   // Animated star rating component
@@ -242,7 +246,7 @@ export default function ModernReviewCard({ review }) {
                   <div className="relative group">
                     <motion.button
                       className="cursor-pointer px-5 py-2 flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 hover:shadow-xl transition-all"
-                      onClick={handleChatWithReviewer}
+                      onClick={handleChatClick}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >

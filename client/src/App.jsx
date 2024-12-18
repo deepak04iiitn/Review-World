@@ -14,6 +14,7 @@ import UpdateReview from './pages/UpdateReview';
 import AllReviews from './pages/AllReviews';
 import Trends from './pages/Trends';
 import Polls from './pages/Polls';
+import ChatHome from './pages/ChatHome';
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
             <Route path='/reviews' element={<AllReviews />} />
             <Route path='/trends' element={<Trends />} />
             <Route path='/polls' element={<Polls />} />
+            <Route path='/chathome' element={<ChatHome />} />
         </Routes>
 
     <Footer />

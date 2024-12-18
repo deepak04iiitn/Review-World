@@ -39,6 +39,10 @@ const reviewSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        reviewerId : {
+            type: String,
+            required: true,
+        },
         userRef: {
             type: String,
             required: true,

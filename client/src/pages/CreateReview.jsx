@@ -115,7 +115,8 @@ export default function CreateReview() {
                     userRef: currentUser._id,
                     userEmail: currentUser.email,
                     userUsername: currentUser.username,
-                    userTitle : currentUser.nickname
+                    userTitle : currentUser.nickname,
+                    reviewerId: currentUser._id
                 }),
             });
             const data = await res.json();
