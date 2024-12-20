@@ -139,3 +139,22 @@ export const getUserReviews = async (req, res, next) => {
     }
 
 }
+
+
+
+export const getUserProfile = async(req, res, next) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return next(errorHandler(401, 'Authentication required'));
+        }
+
+        const loggedInUser = req.user.id;
+        const filteredUsers = await User.find({
+            _id: { $ne: loggedInUser },
+        }).select("-password");
+
+        res.status(200).json({ filteredUsers }); // Changed to 200 since 201 is for creation
+    } catch (error) {
+        next(errorHandler(500, 'Error fetching user profiles'));
+    }
+}

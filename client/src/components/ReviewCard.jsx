@@ -328,7 +328,7 @@ export default function ModernReviewCard({ review }) {
               >
                 <span className="text-xs text-gray-400">by</span>
                 <span className="text-white font-medium text-sm">
-                  {review.userUsername}
+                  {review.userEmail}
                 </span>
               </motion.div>
             </motion.div>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import ReviewCard from '../components/ReviewCard';
 import ReviewHeader from '../components/ReviewHeader';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function AllReviews() {
     const [allReviews, setAllReviews] = useState([]);
@@ -17,6 +18,8 @@ export default function AllReviews() {
 
     const [showUserChatsModal, setShowUserChatsModal] = useState(false);
     const { currentUser } = useSelector(state => state.user);
+
+    const navigate = useNavigate();
 
 
     const categories = [
@@ -118,7 +121,7 @@ export default function AllReviews() {
                 {currentUser && (
                     <div className="mb-4 flex justify-end">
                         <motion.button
-                            onClick={() => setShowUserChatsModal(true)}
+                            onClick={() => navigate('/chathome')}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 flex items-center gap-2"
