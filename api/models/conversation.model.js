@@ -4,7 +4,7 @@ import Message from "./message.model.js";
 
 const conversationSchema = new mongoose.Schema(
   {
-    members: [
+    participants: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: User,
@@ -21,5 +21,5 @@ const conversationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Conversation = mongoose.model("conversation", conversationSchema);
+const Conversation = mongoose.model("Conversation", conversationSchema);
 export default Conversation;

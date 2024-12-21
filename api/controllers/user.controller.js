@@ -153,8 +153,13 @@ export const getUserProfile = async(req, res, next) => {
             _id: { $ne: loggedInUser },
         }).select("-password");
 
-        res.status(200).json({ filteredUsers }); // Changed to 200 since 201 is for creation
+        // Ensure we're sending a properly formatted JSON response
+        res.status(200).json({ 
+            success: true,
+            filteredUsers: filteredUsers 
+        });
     } catch (error) {
-        next(errorHandler(500, 'Error fetching user profiles'));
+        // Pass the error to the error handler with specific details
+        next(errorHandler(500, 'Error fetching user profiles: ' + error.message));
     }
 }

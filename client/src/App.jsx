@@ -15,32 +15,39 @@ import AllReviews from './pages/AllReviews';
 import Trends from './pages/Trends';
 import Polls from './pages/Polls';
 import ChatHome from './pages/ChatHome';
+import { SocketProvider } from './context/SocketContext';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 export default function App() {
   return (
     <BrowserRouter>
-
-    <Header />
-
-        <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/sign-in' element={<SignIn />} />
-            <Route path='/sign-up' element={<SignUp />} />
-            <Route element={<PrivateRoute />}>
-                <Route path='/dashboard' element={<Dashboard />} />
-                <Route path='/create-review' element={<CreateReview />} />
-                <Route path='/update-review/:reviewId' element={<UpdateReview />} />
-            </Route>
-            <Route path='/review/:reviewId' element={<Review />} />
-            <Route path='/reviews' element={<AllReviews />} />
-            <Route path='/trends' element={<Trends />} />
-            <Route path='/polls' element={<Polls />} />
-            <Route path='/chathome' element={<ChatHome />} />
-        </Routes>
-
-    <Footer />
-    
+      <Header />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/sign-in' element={<SignIn />} />
+        <Route path='/sign-up' element={<SignUp />} />
+        <Route element={<PrivateRoute />}>
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/create-review' element={<CreateReview />} />
+          <Route path='/update-review/:reviewId' element={<UpdateReview />} />
+        </Route>
+        <Route path='/review/:reviewId' element={<Review />} />
+        <Route path='/reviews' element={<AllReviews />} />
+        <Route path='/trends' element={<Trends />} />
+        <Route path='/polls' element={<Polls />} />
+        <Route 
+          path='/chathome' 
+          element={
+            <SocketProvider>
+              <ChatHome />
+            </SocketProvider>
+          } 
+        />
+      </Routes>
+      <Footer />
+      <Toaster />
     </BrowserRouter>
-  )
+  );
 }

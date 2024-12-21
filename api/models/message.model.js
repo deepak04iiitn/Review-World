@@ -15,11 +15,19 @@ const messageSchema = new mongoose.Schema(
     message: {
       type: String,
       required: true,
+      trim: true,
+      validate: [
+        {
+            validator: (v) => v.length > 0,
+            message: "Message cannot be empty"
+        }
+      ]
     },
+    createdAt: { type: Date , default: Date.now() },
   },
   { timestamps: true }
 );
 
-const Message = mongoose.model("message", messageSchema);
+const Message = mongoose.model("Message", messageSchema);
 
 export default Message;
