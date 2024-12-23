@@ -14,52 +14,66 @@ function Right() {
   }, [setSelectedConversation]);
 
   return (
-    <div className="w-full bg-slate-900 text-gray-300">
-      <div>
+    <div className="h-full w-full bg-gradient-to-br from-slate-900 to-slate-800 text-gray-200">
+      <div className="h-full relative">
         {!selectedConversation ? (
           <NoChatSelected />
         ) : (
-          <>
-            <Chatuser />
-            <div
-              className=" flex-1 overflow-y-auto"
-              style={{ maxHeight: "calc(88vh - 8vh)" }}
+          <div className="flex flex-col h-full">
+            <div className="border-b border-slate-700/50">
+              <Chatuser />
+            </div>
+            <div 
+              className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent"
+              style={{ maxHeight: "calc(100vh - 16vh)" }}
             >
               <Messages />
             </div>
-            <Type />
-          </>
+            <div className="border-t border-slate-700/50">
+              <Type />
+            </div>
+          </div>
         )}
       </div>
     </div>
   );
 }
 
-export default Right;
-
 const NoChatSelected = () => {
-  const {currentUser} = useSelector(state => state.user);
+  const { currentUser } = useSelector(state => state.user);
+  
   return (
-    <>
-      <div className="relative">
-        <label
-          htmlFor="my-drawer-2"
-          className="btn btn-ghost drawer-button lg:hidden absolute left-5"
-        >
-          <CiMenuFries className="text-white text-xl" />
-        </label>
-        <div className="flex h-screen items-center justify-center">
-          <h1 className="text-center">
-            Welcome{" "}
-            <span className="font-semibold text-xl">
-              {currentUser.username}
+    <div className="h-full relative">
+      <label
+        htmlFor="my-drawer-2"
+        className="absolute left-4 top-4 p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm hover:bg-slate-700/50 transition-all duration-300 lg:hidden"
+      >
+        <CiMenuFries className="text-gray-200 text-xl" />
+      </label>
+      
+      <div className="flex h-full items-center justify-center px-6">
+        <div className="text-center max-w-md mx-auto space-y-4 animate-fadeIn">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+            <span className="text-2xl font-bold text-white">
+              {currentUser.username.charAt(0).toUpperCase()}
             </span>
-            <br />
-            No chat selected, please start conversation by selecting anyone to
-            your contacts
+          </div>
+          <h1 className="text-3xl font-semibold text-gray-100">
+            Welcome, {currentUser.username}!
           </h1>
+          <p className="text-gray-400 leading-relaxed">
+            Start a conversation by selecting someone from your contacts. Your messages will appear here.
+          </p>
+          <div className="mt-8 inline-flex items-center text-sm text-blue-400">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 8l4-4m0 0l4 4m-4-4v12" />
+            </svg>
+            Select a contact to begin
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
+
+export default Right;

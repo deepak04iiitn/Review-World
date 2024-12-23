@@ -17,6 +17,7 @@ import Polls from './pages/Polls';
 import ChatHome from './pages/ChatHome';
 import { SocketProvider } from './context/SocketContext';
 import toast, { Toaster } from 'react-hot-toast';
+import ModernChatInterface from './pages/ModernChatInterface';
 
 
 export default function App() {
@@ -42,6 +43,14 @@ export default function App() {
           element={
             <SocketProvider>
               <ChatHome />
+            </SocketProvider>
+          } 
+        />
+        <Route 
+          path='/modernchat' 
+          element={
+            <SocketProvider>
+              <ModernChatInterface />
             </SocketProvider>
           } 
         />

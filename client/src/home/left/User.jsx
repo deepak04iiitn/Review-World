@@ -2,35 +2,53 @@ import React from "react";
 import useConversation from "../../statemanage/useConversation.js";
 import { useSocketContext } from "../../context/SocketContext.jsx";
 
-export default function User({user}) {
-
-  const {selectedConversation , setSelectedConversation} = useConversation();
-
-  const isSelected = selectedConversation ?. _id === user._id;
-
-  const { socket, onlineUsers } = useSocketContext();
+const User = ({ user }) => {
+  const { selectedConversation, setSelectedConversation } = useConversation();
+  const { onlineUsers } = useSocketContext();
+  
+  const isSelected = selectedConversation?._id === user._id;
   const isOnline = onlineUsers.includes(user._id);
 
   return (
-    <div 
-      className={`hover:bg-slate-600 duration-300 ${
-      isSelected ? "bg-slate-700" : ""
-      }`} onClick={() => setSelectedConversation(user)}
+    <div
+      onClick={() => setSelectedConversation(user)}
+      className={`
+        transform transition-all duration-300 ease-in-out
+        hover:scale-[1.02] cursor-pointer
+        ${isSelected ? 'bg-gradient-to-r from-blue-600 to-blue-400' : 'hover:bg-slate-700/50'}
+        rounded-xl mx-2 my-1.5
+      `}
     >
-      <div className="flex items-center space-x-4 hover:bg-slate-600 duration-300 cursor-pointer px-8 py-7 rounded-lg">
-        <div className={`avatar ${isOnline ? "online" : ""}`}>
-          <div className="w-14 rounded-full">
+      <div className="flex items-center gap-4 p-4">
+        {/* Profile Picture Container */}
+        <div className="relative">
+          <div className="w-14 h-14 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-slate-800 ring-blue-400">
             <img
               src={user.profilePicture}
-              alt="User avatar"
+              alt={`${user.username}'s avatar`}
+              className="w-full h-full object-cover transform transition-transform duration-300 hover:scale-110"
             />
           </div>
+          {/* Online Status Indicator */}
+          {isOnline && (
+            <div className="absolute bottom-0 right-0">
+              <div className="w-4 h-4 rounded-full bg-green-500 ring-2 ring-white" />
+            </div>
+          )}
         </div>
-        <div>
-          <h1 className="font-bold">{user.username}</h1>
-          <span className="text-gray-500">{user.email}</span>
+
+        {/* User Info */}
+        <div className="flex flex-col flex-1 min-w-0">
+          <h3 className={`font-semibold text-lg truncate ${isSelected ? 'text-white' : 'text-gray-100'}`}>
+            {user.username}
+          </h3>
+          <p className={`text-sm truncate ${isSelected ? 'text-blue-100' : 'text-gray-400'}`}>
+            {user.email}
+          </p>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default User;
