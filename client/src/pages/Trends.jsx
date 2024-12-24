@@ -125,7 +125,7 @@ const Trends = () => {
       <div className="max-w-6xl mx-auto opacity-0 animate-[fadeIn_0.8s_ease-out_forwards]">
         {/* Header Section */}
         <div className="text-center mb-8 md:mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6 md:mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4 md:mb-6">
             Review Rating Analysis
           </h1>
           <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed px-4">

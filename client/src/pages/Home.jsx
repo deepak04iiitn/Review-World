@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Award, PieChart, MessageCircle, BookmarkPlus, Globe, Sparkles, Trophy, Users, ThumbsUp } from 'lucide-react';
+import { Star, Award, PieChart, MessageCircle, BookmarkPlus, Globe, Trophy, Users, ThumbsUp } from 'lucide-react';
 
 export default function Home() {
-
   const [isVisible, setIsVisible] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [topReviewers, setTopReviewers] = useState([]);
 
   const features = [
     { icon: <Star size={24} />, title: "Rate & Review", description: "Share your experiences on products and services" },
@@ -16,21 +16,47 @@ export default function Home() {
     { icon: <Globe size={24} />, title: "Global Reach", description: "Connect with reviewers worldwide" }
   ];
 
-  const topReviewers = [
-    { rank: 1, name: "Sarah Johnson", country: "USA", reviews: 1547, rating: 4.9, badge: "Elite" },
-    { rank: 2, name: "Mike Chen", country: "Singapore", reviews: 1423, rating: 4.8, badge: "Expert" },
-    { rank: 3, name: "Anna Schmidt", country: "Germany", reviews: 1356, rating: 4.9, badge: "Elite" },
-    { rank: 4, name: "Carlos Rodriguez", country: "Spain", reviews: 1298, rating: 4.7, badge: "Expert" },
-    { rank: 5, name: "Yuki Tanaka", country: "Japan", reviews: 1245, rating: 4.8, badge: "Elite" }
-  ];
-
   const categories = ["All", "Technology", "Food", "Travel", "Fashion", "Entertainment"];
 
-  const recentAchievements = [
-    { user: "Sarah J.", achievement: "1500+ Reviews", time: "2h ago" },
-    { user: "Mike C.", achievement: "Perfect Month", time: "5h ago" },
-    { user: "Anna S.", achievement: "Top Contributor", time: "1d ago" }
-  ];
+  // Function to determine user badge based on number of reviews
+  const getUserBadge = (reviewCount) => {
+    if (reviewCount >= 40) return 'Elite';
+    if (reviewCount >= 30) return 'Maestro';
+    if (reviewCount >= 20) return 'Rising Star';
+    if (reviewCount >= 10) return 'Emergent';
+    return 'Novice';
+  };
+
+  // Fetch top reviewers from the API
+  useEffect(() => {
+    const fetchTopReviewers = async () => {
+      try {
+        const response = await fetch('/api/user/profile', {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        
+        if (data.success && data.filteredUsers) {
+          // Sort users by number of reviews and get top 5
+          const sortedUsers = data.filteredUsers
+            .sort((a, b) => b.numberOfReviews - a.numberOfReviews)
+            .slice(0, 5)
+            .map((user, index) => ({
+              rank: index + 1,
+              name: user.username,
+              reviews: user.numberOfReviews,
+              badge: getUserBadge(user.numberOfReviews)
+            }));
+          
+          setTopReviewers(sortedUsers);
+        }
+      } catch (error) {
+        console.error('Error fetching top reviewers:', error);
+      }
+    };
+
+    fetchTopReviewers();
+  }, []);
 
   useEffect(() => {
     setIsVisible(true);
@@ -41,7 +67,6 @@ export default function Home() {
   }, []);
 
   return (
-
     <div className="min-h-screen mb-10 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-white p-8">
       {/* Hero Section */}
       <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
@@ -111,9 +136,7 @@ export default function Home() {
                 <tr className="border-b border-white/10">
                   <th className="text-left py-3 text-gray-300">Rank</th>
                   <th className="text-left py-3 text-gray-300">Name</th>
-                  <th className="text-left py-3 text-gray-300">Country</th>
                   <th className="text-left py-3 text-gray-300">Reviews</th>
-                  <th className="text-left py-3 text-gray-300">Rating</th>
                   <th className="text-left py-3 text-gray-300">Status</th>
                 </tr>
               </thead>
@@ -122,18 +145,17 @@ export default function Home() {
                   <tr key={reviewer.rank} className="border-b border-white/10 hover:bg-white/5">
                     <td className="py-3 font-medium">{reviewer.rank}</td>
                     <td className="py-3">{reviewer.name}</td>
-                    <td className="py-3">{reviewer.country}</td>
                     <td className="py-3">{reviewer.reviews}</td>
-                    <td className="py-3">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        {reviewer.rating}
-                      </div>
-                    </td>
                     <td className="py-3">
                       <span className={`px-2 py-1 rounded-full text-sm ${
                         reviewer.badge === 'Elite'
                           ? 'bg-blue-500 text-white'
+                          : reviewer.badge === 'Maestro'
+                          ? 'bg-purple-500 text-white'
+                          : reviewer.badge === 'Rising Star'
+                          ? 'bg-yellow-500 text-white'
+                          : reviewer.badge === 'Emergent'
+                          ? 'bg-green-500 text-white'
                           : 'bg-gray-500 text-white'
                       }`}>
                         {reviewer.badge}
@@ -162,27 +184,6 @@ export default function Home() {
                 {stat.value}
               </div>
               <div className="text-gray-300 mt-2">{stat.label}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Recent Achievements */}
-      <div className="max-w-4xl mx-auto mt-16 space-y-4">
-        <h3 className="text-2xl font-bold flex items-center gap-2 mb-6">
-          <Sparkles className="text-yellow-400" />
-          Recent Achievements
-        </h3>
-        {recentAchievements.map((achievement, index) => (
-          <div key={index} className="bg-white/10 backdrop-blur-lg rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Award className="text-purple-400" />
-                <span className="font-semibold">{achievement.user}</span>
-                <span className="text-gray-300">earned</span>
-                <span className="font-semibold">{achievement.achievement}</span>
-              </div>
-              <span className="text-gray-400 text-sm">{achievement.time}</span>
             </div>
           </div>
         ))}
@@ -224,4 +225,4 @@ export default function Home() {
       </div>
     </div>
   );
-};
+}
