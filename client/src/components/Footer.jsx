@@ -16,7 +16,7 @@ export default function ModernFooter() {
           {/* About Card */}
           <div className="backdrop-blur-lg bg-black/30 rounded-2xl p-6 border border-white/20 hover:border-purple-500/70 transition-colors">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src="/assets/ReviewWorld1.png" alt="Review4All" className="h-12 w-12" />
+              <img src="/assets/Review4All.png" alt="Review4All" className="h-12 w-18" />
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent">
                 Review4All
               </span>

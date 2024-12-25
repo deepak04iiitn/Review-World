@@ -4,6 +4,7 @@ import DashSidebar from '../components/DashSidebar';
 import DashProfile from '../components/DashProfile';
 import DashMyReviews from '../components/DashMyReviews';
 import DashSavedReviews from '../components/DashSavedReviews';
+import ChatHome from './ChatHome';
 
 export default function Dashboard() {
 
@@ -44,6 +45,9 @@ export default function Dashboard() {
 
       {/* Saved Reviews */}
       {tab ==='savedReviews' && <DashSavedReviews />}
+
+      {/* Chatting Section */}
+      {tab ==='chat' && <ChatHome />}
 
     </div>
   )
