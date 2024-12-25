@@ -163,3 +163,67 @@ export const getUserProfile = async(req, res, next) => {
         next(errorHandler(500, 'Error fetching user profiles: ' + error.message));
     }
 }
+
+
+
+export const saveReview = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const reviewId = req.params.reviewId;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return next(errorHandler(404, 'User not found'));
+        }
+
+        if (user.savedReviews.includes(reviewId)) {
+            return next(errorHandler(400, 'Review already saved'));
+        }
+
+        user.savedReviews.push(reviewId);
+        await user.save();
+
+        res.status(200).json({ message: 'Review saved successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const unsaveReview = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const reviewId = req.params.reviewId;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return next(errorHandler(404, 'User not found'));
+        }
+
+        const index = user.savedReviews.indexOf(reviewId);
+        if (index === -1) {
+            return next(errorHandler(400, 'Review not found in saved list'));
+        }
+
+        user.savedReviews.splice(index, 1);
+        await user.save();
+
+        res.status(200).json({ message: 'Review removed from saved list' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getSavedReviews = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).populate('savedReviews');
+        
+        if (!user) {
+            return next(errorHandler(404, 'User not found'));
+        }
+
+        res.status(200).json(user.savedReviews);
+    } catch (error) {
+        next(error);
+    }
+};

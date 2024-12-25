@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookmarkPlus, BookmarkCheck, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useSelector } from 'react-redux';
@@ -44,14 +44,51 @@ const ModernReviewCard = ({ review }) => {
   const navigate = useNavigate();
   const { currentUser } = useSelector(state => state.user);
 
-  const handleSave = () => {
+
+  useEffect(() => {
+    // Check if review is saved when component mounts
+    const checkSavedStatus = async () => {
+        if (!currentUser) return;
+        try {
+            const res = await fetch(`/api/user/saved-reviews`);
+            const data = await res.json();
+            setIsSaved(data.some(savedReview => savedReview._id === review._id));
+        } catch (error) {
+            console.error('Error checking saved status:', error);
+        }
+    };
+    checkSavedStatus();
+}, [currentUser, review._id]);
+
+const handleSave = async () => {
     if (!currentUser) {
-      setShowSignInModal(true);
-      return;
+        setShowSignInModal(true);
+        return;
     }
-    setIsSaved(!isSaved);
-    // Add your save logic here
-  };
+
+    try {
+        if (!isSaved) {
+            const res = await fetch(`/api/user/save-review/${review._id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (res.ok) {
+                setIsSaved(true);
+            }
+        } else {
+            const res = await fetch(`/api/user/unsave-review/${review._id}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                setIsSaved(false);
+            }
+        }
+    } catch (error) {
+        console.error('Error saving/unsaving review:', error);
+    }
+};
 
   const handleLikeDislike = (action) => {
     if (!currentUser) {
