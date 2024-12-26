@@ -134,9 +134,6 @@ const handleSave = async () => {
                   <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-blue-500/80 to-blue-600/80 rounded-full backdrop-blur-md">
                     {review.category}
                   </span>
-                  <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-purple-500/80 to-purple-600/80 rounded-full backdrop-blur-md">
-                    {review.userTitle}
-                  </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <span className="text-gray-400">by</span>
