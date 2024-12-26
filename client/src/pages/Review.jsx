@@ -203,16 +203,6 @@ export default function Review() {
             </div>
 
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <div className="relative flex-1 group">
-                <Button gradientDuoTone="purpleToPink" className="w-full px-6 py-2 rounded-md shadow-md flex items-center justify-center space-x-2">
-                  <MdChat className="text-xl mr-2" />
-                  <span>Chat with Reviewer</span>
-                </Button>
-
-                <div className="absolute bottom-full left-0 mb-2 w-full px-2 py-1 text-center text-sm text-white bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Want to know complete details? Go ahead and have a chat with the reviewer!
-                </div>
-              </div>
 
               <div className="relative flex-1 group">
                 <Button gradientDuoTone="cyanToBlue" className="w-full px-6 py-2 rounded-md shadow-md flex items-center justify-center space-x-2" onClick={summarizeReview}>

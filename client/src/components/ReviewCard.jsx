@@ -176,7 +176,7 @@ const handleSave = async () => {
             <h3 className="text-2xl font-bold mb-3 text-white">
               {review.subcategory}
             </h3>
-            <p className="text-gray-300 line-clamp-2 mb-6">
+            <p className="text-gray-300 line-clamp-1 mb-6">
               {review.review}
             </p>
 
