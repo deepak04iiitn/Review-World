@@ -38,6 +38,12 @@ app.use('/api/polls', pollRoutes);
 app.use('/api/message', messageRoutes);
 
 
+// Ping endpoint to keep backend awake
+app.get('/api/ping', (req, res) => {
+  res.status(200).send('pong');
+});
+
+
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {
